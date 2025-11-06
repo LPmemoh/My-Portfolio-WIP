@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 const NAV_ITEMS = [
-  { href: '#home', label: '#home' },
-  { href: '#projects', label: '#projects' },
-  { href: '#skills', label: '#skills' },
-  { href: '#experience', label: '#experience' },
-  { href: '#contact', label: '#contact' },
+  { href: '#home', label: 'Home' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
@@ -26,6 +26,7 @@ export default function Navbar() {
                 href={item.href}
                 className="text-slate-300 hover:text-white transition-colors"
               >
+                <span className='text-slate-300'>#</span>
                 {item.label}
               </a>
             ))}

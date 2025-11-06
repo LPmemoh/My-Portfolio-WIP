@@ -1,11 +1,10 @@
-/* App-level custom styles (keep minimal; Tailwind handles most) */
 /* Decorative animated gradient blur behind hero */
 .hero-blob {
   position: absolute;
-  inset: -20% -10% auto -10%;
-  height: 60vh;
+  inset: -20% -10% -10% -10%;
+  height: screen;
   filter: blur(80px);
-  opacity: 0.35;
+  opacity: 0.2;
   background: radial-gradient(closest-side, #6366f1, transparent 70%),
               radial-gradient(closest-side, #22d3ee, transparent 70%),
               radial-gradient(closest-side, #f43f5e, transparent 70%);

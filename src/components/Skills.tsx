@@ -17,7 +17,10 @@ export default function Skills() {
   return (
     <section id="skills" className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Skills</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">&lt;/&gt; Skills</h2>
+          <span className="h-px w-3xs flex bg-indigo-500"></span>
+        </div>
         <p className="mt-2 text-sm text-slate-300">A snapshot of technologies I use.</p>
 
         <div className="mt-8 grid gap-6 md:grid-cols-3">

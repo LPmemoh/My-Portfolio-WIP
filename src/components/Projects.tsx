@@ -44,16 +44,16 @@ const projects: Project[] = [
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-16 md:py-24">
+    <section id="projects" className="py-5 md:py-5">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Featured Projects</h2>
-            <p className="mt-2 text-sm text-slate-300">A selection of recent work and experiments.</p>
+        <div className="mb-2 flex items-end justify-between">
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">&lt;/&gt; Projects</h2>
+            <span className="h-px w-3xs flex bg-indigo-500"></span>
           </div>
-          <a href="#contact" className="hidden rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10 md:inline-block">Work with me</a>
+          <a href="#contact" className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10 md:inline-block">Work with me</a>
         </div>
-
+        <p className="mb-8 text-sm text-slate-300">A selection of recent work and projects.</p>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p) => (
             <article key={p.title} className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5 shadow-sm transition-transform hover:-translate-y-1 hover:bg-white/10">

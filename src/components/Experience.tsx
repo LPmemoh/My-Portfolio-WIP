@@ -30,7 +30,10 @@ export default function Experience() {
   return (
     <section id="experience" className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Experience</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">&lt;/&gt; Experience</h2>
+          <span className="h-px w-3xs flex bg-indigo-500"></span>
+        </div>
         <p className="mt-2 text-sm text-slate-300">Where I’ve learned and delivered.</p>
 
         <div className="mt-8 grid gap-6">

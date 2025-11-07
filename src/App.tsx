@@ -22,8 +22,8 @@ function App() {
   return (
     <div className="min-h-dvh bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
       <motion.main
-        initial={{ scale: 0.92, filter: 'blur(8px)' }}
-        animate={{ scale: 1, filter: 'blur(0px)' }}
+        initial={{ filter: 'blur(12px)' }}
+        animate={{ filter: 'blur(0px)' }}
         transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
       >
         <Hero />

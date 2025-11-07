@@ -8,7 +8,7 @@ export default function PipelineBackground() {
   const hostRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const pipeCount = 30
+    const pipeCount = 80
     const pipePropCount = 8
     const pipePropsLength = pipeCount * pipePropCount
     const turnCount = 8
@@ -24,17 +24,37 @@ export default function PipelineBackground() {
     const baseHue = 240
     const rangeHue = 60
     const backgroundColor = 'hsl(225, 70%, 6%)'
-    const effectDurationMs = 8000
-    const effectDurationFrames = Math.max(1, Math.round(effectDurationMs / (1000 / 60)))
+    const effectDurationMs = Infinity
+    const baseFrameRate = 60
+    const effectDurationFrames = Infinity
+    const targetFps = 30
+    const frameInterval = 1000 / targetFps
+    const lifeStep = baseFrameRate / targetFps
+    const maxTrailLength = 600
+    const blurStrength = 6
+    const maxPixelRatio = 1.5
+    const resolutionScale = 0.85
 
     const rand = (n: number) => Math.random() * n
     const fadeInOut = (life: number, ttl: number) => {
       if (ttl <= 0) return 0
+      if (!Number.isFinite(ttl)) {
+        const fadeInFrames = baseFrameRate * 1.5 // ~1.5s fade for infinite pipes
+        return Math.min(1, life / fadeInFrames)
+      }
       const fadeInFrames = Math.max(1, ttl * 0.2)
       if (life <= fadeInFrames) {
         return life / fadeInFrames
       }
       return 1
+    }
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+    if (prefersReducedMotion) {
+      return
     }
 
     const container = hostRef.current
@@ -67,6 +87,11 @@ export default function PipelineBackground() {
     const eraserQueue: Array<{ path: number[]; lifeSamples: number[]; startIndex: number; width: number; hue: number }> = []
     let tick = 0
     let frameId = 0
+    let lastFrameTime = 0
+    let viewWidth = 0
+    let viewHeight = 0
+    let pixelRatio = 1
+    let isVisible = document.visibilityState !== 'hidden'
 
     const resize = () => {
       const bounds = container.getBoundingClientRect()
@@ -77,29 +102,38 @@ export default function PipelineBackground() {
         return
       }
 
-      canvas.a.width = width
-      canvas.a.height = height
-      canvas.b.width = width
-      canvas.b.height = height
+      const deviceRatio = window.devicePixelRatio || 1
+      pixelRatio = Math.min(deviceRatio, maxPixelRatio) * resolutionScale
+      viewWidth = width
+      viewHeight = height
+      const scaledWidth = Math.max(1, Math.floor(width * pixelRatio))
+      const scaledHeight = Math.max(1, Math.floor(height * pixelRatio))
 
-      ctx.a.setTransform(1, 0, 0, 1, 0, 0)
+      canvas.a.width = scaledWidth
+      canvas.a.height = scaledHeight
+      canvas.b.width = scaledWidth
+      canvas.b.height = scaledHeight
+
+      ctx.a.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
       ctx.a.clearRect(0, 0, width, height)
-      ctx.b.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.b.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
       ctx.b.clearRect(0, 0, width, height)
     }
 
     const initPipe = (i: number, now: number) => {
       const pipeIndex = Math.floor(i / pipePropCount)
-      const x = rand(canvas.a.width)
-      const y = rand(canvas.a.height)
+      const drawWidth = Math.max(1, viewWidth)
+      const drawHeight = Math.max(1, viewHeight)
+      const x = rand(drawWidth)
+      const y = rand(drawHeight)
       const direction = Math.round(rand(1)) ? HALF_PI : TAU - HALF_PI
       const speed = baseSpeed + rand(rangeSpeed)
       const life = 0
       const ttl = effectDurationFrames
-      const width = baseWidth + rand(rangeWidth)
+      const widthValue = baseWidth + rand(rangeWidth)
       const hue = baseHue + rand(rangeHue)
 
-      pipeProps.set([x, y, direction, speed, life, ttl, width, hue], i)
+      pipeProps.set([x, y, direction, speed, life, ttl, widthValue, hue], i)
       pipeHistories[pipeIndex] = [x, y]
       pipeLifeSamples[pipeIndex] = [life]
       pipeSpawnTimes[pipeIndex] = now
@@ -114,8 +148,8 @@ export default function PipelineBackground() {
     }
 
     const wrapBounds = (i: number) => {
-      const width = canvas.a.width
-      const height = canvas.a.height
+      const width = viewWidth
+      const height = viewHeight
       const xIndex = i
       const yIndex = i + 1
 
@@ -181,18 +215,26 @@ export default function PipelineBackground() {
       const wrappedY = pipeProps[yIndex]
       path.push(wrappedX, wrappedY)
       lifeSamples.push(lifeSnapshot)
+      if (path.length > maxTrailLength) {
+        const excess = path.length - maxTrailLength
+        path.splice(0, excess)
+        const lifeExcess = Math.ceil(excess / 2)
+        lifeSamples.splice(0, lifeExcess)
+      }
 
-      life += 1
+      life += lifeStep
       pipeProps[lifeIndex] = life
 
-      if (now - pipeSpawnTimes[pipeIndex] >= effectDurationMs) {
+      if (Number.isFinite(effectDurationMs) && now - pipeSpawnTimes[pipeIndex] >= effectDurationMs) {
         eraserQueue.push({
-          path: path.slice(),
-          lifeSamples: lifeSamples.slice(),
+          path,
+          lifeSamples,
           startIndex: 0,
           width,
           hue,
         })
+        pipeHistories[pipeIndex] = []
+        pipeLifeSamples[pipeIndex] = []
         initPipe(i, now)
       }
     }
@@ -210,6 +252,8 @@ export default function PipelineBackground() {
         entry.startIndex = Math.min(entry.path.length, entry.startIndex + 4)
         if (entry.startIndex >= entry.path.length) {
           eraserQueue.splice(i, 1)
+          entry.path.length = 0
+          entry.lifeSamples.length = 0
         }
       }
     }
@@ -230,8 +274,8 @@ export default function PipelineBackground() {
 
     const render = () => {
       ctx.a.save()
-      ctx.a.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height)
+      ctx.a.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+      ctx.a.clearRect(0, 0, viewWidth, viewHeight)
       ctx.a.restore()
 
       for (let pipeIndex = 0; pipeIndex < pipeCount; pipeIndex++) {
@@ -250,50 +294,62 @@ export default function PipelineBackground() {
 
       ctx.b.save()
       ctx.b.fillStyle = backgroundColor
-      ctx.b.fillRect(0, 0, canvas.b.width, canvas.b.height)
+      ctx.b.fillRect(0, 0, viewWidth, viewHeight)
       ctx.b.restore()
 
       ctx.b.save()
-      ctx.b.filter = 'blur(12px)'
-      ctx.b.drawImage(canvas.a, 0, 0)
-      ctx.b.restore()
-
-      ctx.b.save()
-      ctx.b.drawImage(canvas.a, 0, 0)
+      ctx.b.filter = `blur(${blurStrength}px)`
+      ctx.b.globalAlpha = 0.9
+      ctx.b.drawImage(canvas.a, 0, 0, viewWidth, viewHeight)
       ctx.b.restore()
     }
 
-    const draw = () => {
-      const now = performance.now()
-      updatePipes(now)
-      advanceErasers()
-      render()
+    const draw = (now: number) => {
+      if (!isVisible) {
+        frameId = window.requestAnimationFrame(draw)
+        return
+      }
+
+      if (now - lastFrameTime >= frameInterval) {
+        lastFrameTime = now
+        updatePipes(now)
+        advanceErasers()
+        render()
+      }
+
       frameId = window.requestAnimationFrame(draw)
     }
 
     const handleWindowResize = () => {
       resize()
-      initPipes()
     }
 
     const resizeObserver =
       typeof ResizeObserver !== 'undefined'
         ? new ResizeObserver(() => {
             resize()
-            initPipes()
           })
         : null
+
+    const handleVisibilityChange = () => {
+      isVisible = document.visibilityState !== 'hidden'
+      if (isVisible) {
+        lastFrameTime = 0
+      }
+    }
 
     resize()
     initPipes()
     frameId = window.requestAnimationFrame(draw)
     window.addEventListener('resize', handleWindowResize)
     resizeObserver?.observe(container)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       window.cancelAnimationFrame(frameId)
       window.removeEventListener('resize', handleWindowResize)
       resizeObserver?.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height)
       ctx.b.clearRect(0, 0, canvas.b.width, canvas.b.height)
       if (canvas.b.parentElement === container) {

@@ -31,15 +31,15 @@ export function IntroReveal({
       await Promise.all([
         leftControls.start({
           x: '-100%',
-          transition: { delay: 1, duration: 2.0, ease: [0.22, 1, 0.36, 1] },
+          transition: { delay: 1, duration: 2.0, ease: [0.3, 1, 0.36, 1] },
         }),
         rightControls.start({
           x: '100%',
-          transition: { delay: 1, duration: 2.0, ease: [0.22, 1, 0.36, 1] },
+          transition: { delay: 1, duration: 2.0, ease: [0.3, 1, 0.36, 1] },
         }),
         bgControls.start({
           backgroundColor: 'rgba(2,6,23,0)',
-          transition: { delay: 2, duration: 0.6, ease: 'easeOut' },
+          transition: { delay: 1.75, duration: 0.6, ease: 'easeOut' },
         }),
       ])
       if (!isActive) return

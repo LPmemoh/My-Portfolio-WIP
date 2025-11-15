@@ -31,7 +31,7 @@ const projects: Project[] = [
   },
   {
     title: 'Simple Virtual Machine',
-    description: 'Implementation of a simple virtual machine for a toy 16-bit processor, with fetch/decode/execute loop, and a CLI that runs programs assembled by the bundled sasm assembler tool.',
+    description: 'A virtual machine for a toy 16-bit processor, with fetch/decode/execute loop, and a CLI that runs programs through bundled sasm assembler.',
     tags: ['C', 'Linux'],
   },
   {
@@ -43,7 +43,7 @@ const projects: Project[] = [
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-5 md:py-5">
+    <section id="projects" className="py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-4">
         <div className="mb-2 flex items-end justify-between">
           <div className="flex items-center gap-3">

@@ -16,7 +16,7 @@ export default function Navbar() {
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center justify-between py-4">
           <a href="#home" className="text-lg font-semibold tracking-tight">
-            <span className="text-indigo-400">&lt;/&gt;</span> Liam Prsa
+            <span className="text-indigo-400">//</span> Liam Prsa
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">

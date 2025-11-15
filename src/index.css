@@ -12,13 +12,6 @@ body::-webkit-scrollbar {
 }
 /* */
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-}
-
 html { scroll-behavior: smooth; }
 
 a {
@@ -31,20 +24,8 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 { line-height: 1.1; }
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root { color: #213547; }
+  font-family: 'montserrat', sans-serif;
+  font-weight: 400;
 }
 
 /*-------- Hero --------*/

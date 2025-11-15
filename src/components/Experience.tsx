@@ -7,38 +7,47 @@ type Role = {
 
 const roles: Role[] = [
   {
-    role: 'Software Developer',
-    company: 'Tech Co',
-    period: '2023 — Present',
+    role: 'Scrum Lead & Mobile App Developer',
+    company: 'MacEwan University – Android App Project',
+    period: '2024',
     highlights: [
-      'Built performant React features used by thousands of users',
-      'Reduced build times by 40% with optimized tooling',
+      'Led a Scrum team of 4 to build a cross-platform mobile app using React Native',
+      'Integrated Supabase for authentication and data storage',
+      'Ran sprint planning, daily standups, and retrospectives in an Agile environment',
     ],
   },
   {
-    role: 'Intern Developer',
-    company: 'Startup Inc.',
-    period: '2022 — 2023',
+    role: 'Sales Associate',
+    company: 'Canadian Tire – Alberta, Canada',
+    period: 'Sep 2019 — Present',
     highlights: [
-      'Prototyped new dashboards and data visualizations',
-      'Improved accessibility and testing coverage across the app',
+      'Recognized as a dependable team member trusted with time-sensitive tasks by store management',
+      'Maintained efficiency during high-demand periods by balancing multiple priorities under pressure',
+      'Quickly learned new departments and processes, often assisting across multiple areas as needed',
     ],
   },
 ]
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-16 md:py-24">
+    <section id="experience" className="py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">&lt;/&gt; Experience</h2>
-          <span className="h-px w-3xs flex bg-indigo-500"></span>
+          <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            &lt;/&gt; Experience
+          </h2>
+          <span className="h-px w-3xs flex bg-indigo-500" />
         </div>
-        <p className="mt-2 text-sm text-slate-300">Where I’ve learned and delivered.</p>
+        <p className="mt-2 text-sm text-slate-300">
+          Where I’ve learned and led.
+        </p>
 
         <div className="mt-8 grid gap-6">
           {roles.map((r) => (
-            <article key={r.role + r.company} className="relative rounded-xl border border-white/10 bg-white/5 p-6">
+            <article
+              key={r.role + r.company}
+              className="relative rounded-xl border border-white/10 bg-white/5 p-6"
+            >
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <div>
                   <h3 className="text-lg font-semibold">{r.role}</h3>
@@ -58,4 +67,3 @@ export default function Experience() {
     </section>
   )
 }
-

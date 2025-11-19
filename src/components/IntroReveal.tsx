@@ -8,7 +8,7 @@ type IntroRevealProps = {
 
 export function IntroReveal({
   onComplete,
-  fullName = { left: 'Liam', right: 'Prsa' },
+  fullName = { left: 'Hi, I\'m', right: 'Liam!' },
 }: IntroRevealProps) {
   const leftControls = useAnimation()
   const rightControls = useAnimation()

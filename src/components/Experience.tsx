@@ -8,7 +8,7 @@ type Role = {
 const roles: Role[] = [
   {
     role: 'Scrum Lead & Mobile App Developer',
-    company: 'MacEwan University – Android App Project',
+    company: 'MacEwan University – Android App Development',
     period: '2024',
     highlights: [
       'Led a Scrum team of 4 to build a cross-platform mobile app using React Native',
@@ -18,7 +18,7 @@ const roles: Role[] = [
   },
   {
     role: 'Sales Associate',
-    company: 'Canadian Tire – Alberta, Canada',
+    company: 'Canadian Tire',
     period: 'Sep 2019 — Present',
     highlights: [
       'Recognized as a dependable team member trusted with time-sensitive tasks by store management',

@@ -1,8 +1,22 @@
+import { useEffect, useState } from 'react'
 import portrait from '../assets/developer-illustration.png'
 import Silhouette from './Silhouette'
 import PipelineBackground from './PipelineBackground'
+import { ArrowDown } from 'lucide-react'
 
-export default function Hero() {
+type HeroProps = {
+  introComplete?: boolean
+}
+
+export default function Hero({ introComplete = false }: HeroProps) {
+  const [showCTA, setShowCTA] = useState(introComplete)
+
+  useEffect(() => {
+    if (introComplete) {
+      setShowCTA(true)
+    }
+  }, [introComplete])
+
   return (
     <section id="home" className="relative z-0 overflow-hidden">
       <PipelineBackground />
@@ -16,7 +30,7 @@ export default function Hero() {
           <div className="flex flex-col items-center lg:flex-row lg:justify-center">
 
             {/* Left: Title */}
-            <div className="lg:left-[40%] lg:bottom-[5%] mb-4 lg:mb-0 order-1">
+            <div className="lg:left-[40%] lg:bottom-[5%] mb-4 mt-4 lg:mb-0 order-1">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
                 Junior Software Developer
               </h1>
@@ -27,20 +41,23 @@ export default function Hero() {
                 that satisfy industry standards.
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  href="#projects"
-                  className="inline-flex items-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-indigo-400"
-                >
-                  View Projects
-                </a>
+              <div className={`mt-8 flex flex-wrap items-center gap-3 view-work ${showCTA ? 'view-work--visible' : ''}`}>
+                <div className={`view-work ${showCTA ? 'view-work--visible' : ''}`}>
+                  <a
+                    href="#projects"
+                    className="view-work__button inline-flex items-center gap-2 rounded-full border border-indigo-400/70 bg-white/5 px-5 py-2 text-sm font-semibold text-slate-200 transition-colors hover:bg-indigo-500/40 hover:-translate-y-1"
+                  >
+                    <ArrowDown className="h-4 w-4"/>
+                    View My Work
+                  </a>
+                </div>
                 <a
                   href="#contact"
-                  className="inline-flex items-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10"
+                  className="inline-flex items-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:bg-white/10 hover:-translate-y-1"
                 >
                   Get in Touch
                 </a>
-                <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   Available for work
                 </span>

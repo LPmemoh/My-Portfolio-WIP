@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 type Role = {
   role: string
   company: string
@@ -29,8 +31,31 @@ const roles: Role[] = [
 ]
 
 export default function Experience() {
+  const sectionRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-card--visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    section.querySelectorAll('.fade-card').forEach((card) => observer.observe(card))
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="experience" className="py-14 md:py-20">
+    <section ref={sectionRef} id="experience" className="py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
@@ -46,7 +71,7 @@ export default function Experience() {
           {roles.map((r) => (
             <article
               key={r.role + r.company}
-              className="relative rounded-xl border border-white/10 bg-white/5 p-6"
+              className="fade-card relative rounded-xl border border-white/10 bg-white/5 p-6"
             >
               <div className="flex flex-wrap items-baseline justify-between gap-3">
                 <div>

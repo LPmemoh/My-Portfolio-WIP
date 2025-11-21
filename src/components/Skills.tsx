@@ -47,7 +47,7 @@ export default function Skills() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('skill-card--visible')
+            entry.target.classList.add('fade-card--visible')
             observer.unobserve(entry.target)
           }
         })
@@ -55,7 +55,7 @@ export default function Skills() {
       { threshold: 0.2 }
     )
 
-    section.querySelectorAll('.skill-card').forEach((card) => observer.observe(card))
+    section.querySelectorAll('.fade-card').forEach((card) => observer.observe(card))
 
     return () => observer.disconnect()
   }, [])
@@ -75,7 +75,7 @@ export default function Skills() {
               <h3 className="text-lg font-semibold">{group.title}</h3>
               <div className="mt-4 flex flex-wrap gap-10">
                 {group.items.map((item) => (
-                  <div key={item.label} className="skill-card flex w-28 h-35 flex-col text-center">
+                  <div key={item.label} className="fade-card flex w-28 h-35 flex-col text-center">
                     <div className="flex-1 h-35 w-35 justify-items-center content-center rounded-xl border border-white/8 bg-slate-900">
                       <img src={item.icon} alt={item.label} className="h-12 w-12 object-contain" />
                       <span className="skills-itemname mt-2 text-sm text-slate-200">{item.label}</span>

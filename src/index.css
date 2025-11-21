@@ -43,6 +43,41 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.view-work {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+
+.view-work--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.view-work__button {
+  position: relative;
+  overflow: visible;
+}
+
+.view-work--visible .view-work__button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.55);
+  opacity: 0;
+  animation: flashRing 1.3s ease-out 0.25s 2;
+}
+
+@keyframes flashRing {
+  0% { opacity: 0.65; transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.55); }
+  60% { opacity: 0; transform: scale(1.5); box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+  100% { opacity: 0; transform: scale(1.7); box-shadow: 0 0 0 18px rgba(99, 102, 241, 0); }
+}
+
 /*-------- Skills --------*/
 .skills-itemname {
     font-size: 0.7rem;
@@ -52,13 +87,102 @@ body {
     transition: 0.2s;
 }
 
-.skill-card {
+.fade-card {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.skill-card--visible {
+.fade-card--visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/*-------- Projects --------*/
+.project-glow {
+  background: radial-gradient(60% 60% at 30% 10%, rgba(99, 102, 241, 0.8), transparent),
+              radial-gradient(60% 60% at 70% 50%, rgba(224, 108, 199, 0.75), transparent);
+}
+
+
+/*-------- Starfield (background) --------*/
+/* retrieved from https://codepen.io/sarazond/pen/LYGbwj */
+.starfield {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.starfield main,
+.starfield footer {
+  position: relative;
+  z-index: 1;
+}
+
+.starfield__layer {
+  position: absolute;
+  inset: 0;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 5px;
+}
+
+.starfield__layer--small {
+  box-shadow: var(--stars-small);
+  animation: starDrift 110s linear infinite;
+  opacity: 0.45;
+}
+
+.starfield__layer--small::after {
+  content: '';
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  box-shadow: var(--stars-small);
+  border-radius: 5px;
+}
+
+.starfield__layer--medium {
+  width: 2px;
+  height: 2px;
+  box-shadow: var(--stars-medium);
+  animation: starDrift 160s linear infinite;
+  opacity: 0.55;
+}
+
+.starfield__layer--medium::after {
+  content: '';
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  box-shadow: var(--stars-medium);
+  border-radius: 5px;
+}
+
+.starfield__layer--big {
+  width: 3px;
+  height: 3px;
+  box-shadow: var(--stars-big);
+  animation: starDrift 220s linear infinite;
+  opacity: 0.55;
+}
+
+.starfield__layer--big::after {
+  content: '';
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  box-shadow: var(--stars-big);
+  border-radius: 5px;
+}
+
+@keyframes starDrift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-2000px); }
 }
